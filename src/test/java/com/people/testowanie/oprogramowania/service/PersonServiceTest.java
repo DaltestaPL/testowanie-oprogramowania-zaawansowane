@@ -3,11 +3,14 @@ package com.people.testowanie.oprogramowania.service;
 import com.people.testowanie.oprogramowania.model.dto.PersonDto;
 import com.people.testowanie.oprogramowania.model.entity.PersonEntity;
 import com.people.testowanie.oprogramowania.repository.PersonRepository;
+import com.people.testowanie.oprogramowania.utils.PersonFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,8 +29,8 @@ public class PersonServiceTest {
     @Test
     void whenSavePerson_thenShouldSavePersonCorrectly() {
         //given
-        var personDto = PersonDto.builder().name("Name 1").surname("Surname 1").build();
-        var personEntity = PersonEntity.builder().id(1L).name("Name 1").surname("Surname 1").build();
+        var personDto = PersonFactory.simplePersonDto().build();
+        var personEntity = PersonFactory.simplePersonEntity().build();
         //and
         when(personRepository.save(any())).thenReturn(personEntity);
 
@@ -40,5 +43,23 @@ public class PersonServiceTest {
         assertEquals(personEntity.getId(), result.getId());
         assertEquals(personEntity.getName(), result.getName());
         assertEquals(personEntity.getSurname(), result.getSurname());
+    }
+
+    @Test
+    void whenFindPersonById_thenShouldFindPersonCorrectly() {
+        //given
+        var personId = 10L;
+        var personEntity = Optional.of(PersonFactory.simplePersonEntity().id(personId).build());
+        //and
+        when(personRepository.findById(any())).thenReturn(personEntity);
+
+        //when
+        var result = personService.findById(personId);
+
+        //then
+        assertNotNull(result);
+        //and
+        assertEquals(personId, result.getId());
+        assertEquals(personEntity.get().getName(), result.getName());
     }
 }
