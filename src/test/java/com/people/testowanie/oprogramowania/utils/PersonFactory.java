@@ -10,7 +10,6 @@ public class PersonFactory {
 
     public static PersonEntity.PersonEntityBuilder simplePersonEntity() {
         return PersonEntity.builder()
-                .id(1L)
                 .name("Jan")
                 .surname("Kowalski")
                 .birthday(LocalDate.of(2000, 4, 13))
