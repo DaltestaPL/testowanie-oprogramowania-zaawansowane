@@ -63,7 +63,7 @@ public class PeopleController {
 
     @DeleteMapping(DELETE_PERSON_BY_ID)
     @ResponseStatus(HttpStatus.OK)
-    public void updatePerson(@PathVariable Long personId) {
+    public void deletePerson(@PathVariable Long personId) {
         personService.deleteById(personId);
     }
 }
