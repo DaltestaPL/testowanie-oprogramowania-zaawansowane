@@ -1,21 +1,19 @@
 package com.people.testowanie.oprogramowania.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.people.testowanie.oprogramowania.BaseIT;
 import com.people.testowanie.oprogramowania.model.rest.request.SavePersonRequest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static com.people.testowanie.oprogramowania.controller.ApiConstraints.PERSON;
+import static com.people.testowanie.oprogramowania.controller.PeopleController.FIND_ALL_PEOPLE;
 import static com.people.testowanie.oprogramowania.controller.PeopleController.SAVE_PERSON;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PeopleControllerIT extends BaseIT {
@@ -57,5 +55,19 @@ public class PeopleControllerIT extends BaseIT {
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(jsonPath("$.error", is(expectedStatus.getReasonPhrase())))
                 .andExpect(jsonPath("$.message.size()", is(expectedMessagesCount)));
+    }
+
+    @Test
+    @Sql(value = "/sql/people-init.sql")
+    void whenFindAllPeopleRequest_thenShouldFindPeopleCorrectly() throws Exception {
+        //given
+        var url = PERSON + FIND_ALL_PEOPLE;
+
+        //when
+        var result = mockMvc.perform(get(url).contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.people.size()", is(5)));
     }
 }
