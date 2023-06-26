@@ -1,7 +1,5 @@
 package com.people.testowanie.oprogramowania.service;
 
-import com.people.testowanie.oprogramowania.model.dto.PersonDto;
-import com.people.testowanie.oprogramowania.model.entity.PersonEntity;
 import com.people.testowanie.oprogramowania.repository.PersonRepository;
 import com.people.testowanie.oprogramowania.utils.PersonFactory;
 import org.junit.jupiter.api.Test;
@@ -61,5 +59,19 @@ public class PersonServiceTest {
         //and
         assertEquals(personId, result.getId());
         assertEquals(personEntity.get().getName(), result.getName());
+    }
+
+    @Test
+    void whenDeletePersonById_thenShouldDeletePersonCorrectly() {
+        //given
+        var personId = 1L;
+        var personEntity = Optional.of(PersonFactory.simplePersonEntity().id(personId).build());
+        //and
+        when(personRepository.findById(any())).thenReturn(personEntity);
+
+        //when
+        personService.deleteById(personId);
+
+//        Mockito.verify(personRepository.delete());
     }
 }
