@@ -12,11 +12,31 @@ import static com.people.testowanie.oprogramowania.controller.ApiConstraints.PER
 import static com.people.testowanie.oprogramowania.controller.PeopleController.FIND_ALL_PEOPLE;
 import static com.people.testowanie.oprogramowania.controller.PeopleController.SAVE_PERSON;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PeopleControllerIT extends BaseIT {
+
+    @Test
+    @Sql(value = "/sql/people-init.sql")
+    void whenFindPersonById_thenCorrectResponse() throws Exception {
+        //given
+        var personId = 1;
+        String url = PERSON + "/" + personId;
+        //and
+        var name = "Jan";
+        var surname = "Kowalski";
+
+        //when
+        var result = mockMvc.perform(get(url).contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.person.id", is(personId)))
+                .andExpect(jsonPath("$.person.name", is(name)))
+                .andExpect(jsonPath("$.person.surname", is(surname)));
+    }
 
     @Test
     void whenSavePersonRequest_thenSavePersonCorrectly() throws Exception {
