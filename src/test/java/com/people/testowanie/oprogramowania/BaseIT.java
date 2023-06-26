@@ -19,9 +19,6 @@ public class BaseIT {
     protected MockMvc mockMvc;
 
     @Autowired
-    protected PersonService personService;
-
-    @Autowired
     protected PersonRepository personRepository;
 
     @SneakyThrows

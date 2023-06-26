@@ -4,10 +4,14 @@ import com.people.testowanie.oprogramowania.BaseIT;
 import com.people.testowanie.oprogramowania.exception.exceptions.EntityNotFoundException;
 import com.people.testowanie.oprogramowania.utils.PersonFactory;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonServiceIT extends BaseIT {
+
+    @Autowired
+    protected PersonService personService;
 
     @Test
     void whenFindAllPeople_thenFindAllPeopleCorrectly() {

@@ -39,8 +39,8 @@ public class PersonSpecification implements Specification<PersonEntity> {
     }
 
     private Predicate weightFromLessThanOrEqualTo(Root<PersonEntity> root, CriteriaBuilder criteriaBuilder) {
-        return nonNull(criteria.getWeightTo()) ?
-            criteriaBuilder.greaterThanOrEqualTo(root.get("weight"), criteria.getWeightTo()) :
+        return nonNull(criteria.getWeightFrom()) ?
+            criteriaBuilder.greaterThanOrEqualTo(root.get("weight"), criteria.getWeightFrom()) :
             alwaysTruePredicate(criteriaBuilder);
     }
 
