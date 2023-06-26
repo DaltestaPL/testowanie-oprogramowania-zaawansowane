@@ -1,28 +1,13 @@
 package com.people.testowanie.oprogramowania.service;
 
+import com.people.testowanie.oprogramowania.BaseIT;
 import com.people.testowanie.oprogramowania.exception.exceptions.EntityNotFoundException;
-import com.people.testowanie.oprogramowania.repository.PersonRepository;
 import com.people.testowanie.oprogramowania.utils.PersonFactory;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-class PersonServiceIT {
-
-    @Autowired
-    private PersonService personService;
-
-    @Autowired
-    private PersonRepository personRepository;
-
-    @AfterEach
-    void cleanUp() {
-        personRepository.deleteAll();
-    }
+class PersonServiceIT extends BaseIT {
 
     @Test
     void whenFindAllPeople_thenFindAllPeopleCorrectly() {
